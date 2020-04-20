@@ -3,12 +3,6 @@ let board = [[0, 0, 0],
              [0, 0, 0],
              [0, 0, 0]];
 
-
- let resetBoard = [[0, 0, 0],
-             [0, 0, 0],
-             [0, 0, 0]];
-
-
 let row1 = board[0];
 let row2 = board[1];
 let row3 = board[2];
@@ -21,7 +15,8 @@ let winningMessage = null;
 // HANDLES GAME OVER
 
 let gameOverHandler = () => {
- window.alert( winningMessage + " please restart ")
+setTimeout(() => { window.alert( winningMessage + " please restart ")}, 200)
+
 }
 
 
@@ -64,12 +59,16 @@ let checkVertical = () => {
       if (xCounter > 2) {
         gameOver = true
         winningMessage =  'X vertical win'
+        xCounter = 0;
+        oCounter = 0;
         return true;
         break
 
       } else if (oCounter > 2) {
         gameOver = true
         winningMessage = 'O vertical win'
+        xCounter = 0;
+        oCounter = 0;
         return true
         break
       }
@@ -99,12 +98,16 @@ let checkHorizontal = () => {
 
         gameOver = true;
         winningMessage = " O horizontal win"
+        xCounter = 0;
+        oCounter = 0;
         return true
         break
 
       } else if (xCounter > 2) {
         gameOver = true
         winningMessage = " X horizontal win"
+        xCounter = 0;
+        oCounter = 0;
         return true
         break
       }
@@ -161,17 +164,19 @@ let addXorO = (event) => {
   updateBoard(coordinate)
 
   if (cellToChange.innerHTML.length === 0) {
-
     cellToChange.innerHTML = symbol;
     toggleXorO()
   };
+
 }
 
 //  HANDLE RESET OF BOARD
 
 let boardReset = (event) => {
 
-  let board = resetBoard ;
+  let board = [[0, 0, 0],
+               [0, 0, 0],
+               [0, 0, 0]] ;
 
   let cells = document.getElementById("table").querySelectorAll("td");
 
