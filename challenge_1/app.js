@@ -4,6 +4,11 @@ let board = [[0, 0, 0],
              [0, 0, 0]];
 
 
+ let resetBoard = [[0, 0, 0],
+             [0, 0, 0],
+             [0, 0, 0]];
+
+
 let row1 = board[0];
 let row2 = board[1];
 let row3 = board[2];
@@ -16,12 +21,25 @@ let winningMessage = null;
 // HANDLES GAME OVER
 
 let gameOverHandler = () => {
-
+ window.alert( winningMessage + " please restart ")
 }
 
 
 // HANDLES CHANGING THE BOARD FOR GAME LOGIC
 let checkDiagnol = () => {
+
+  if ( row1[0] === 1 && row2[1] === 1 && row3[2] === 1 || row1[2] === 1 && row2[1] === 1 && row3[0] === 1  ) {
+    // TODO HANDLE GAME OVER LOGIC
+    gameOver = true
+    winningMessage = 'X Diagnol win'
+    return true
+
+  } else if ( row1[0] === 2 && row2[1] === 2 && row3[2] === 2 || row1[2] === 2 && row2[1] === 2 && row3[0] === 2 ) {
+
+    gameOver = true
+    winningMessage = 'O diagnol win'
+    return true
+  }
 
 }
 
@@ -45,15 +63,17 @@ let checkVertical = () => {
 
       if (xCounter > 2) {
         gameOver = true
-        console.log('x vertical win')
+        winningMessage =  'X vertical win'
+        return true;
+        break
 
       } else if (oCounter > 2) {
         gameOver = true
-        console.log('o vertical win')
+        winningMessage = 'O vertical win'
+        return true
+        break
       }
-      if (gameOver) {
-        // TODO : CREATE LOGIC FOR IF IT IS GAME OVER
-      }
+
     }
    }
 }
@@ -78,18 +98,15 @@ let checkHorizontal = () => {
       if (oCounter > 2) {
 
         gameOver = true;
-        winningMessage = " O player wins"
-
-        console.log('O horizontal win')
+        winningMessage = " O horizontal win"
+        return true
+        break
 
       } else if (xCounter > 2) {
         gameOver = true
-        winningMessage = " X Player wins"
-        console.log(' X horizontal win')
-      }
-      if (gameOver) {
-        //  TODO CREATE GAME OVER LOGIC
-
+        winningMessage = " X horizontal win"
+        return true
+        break
       }
     }
   }
@@ -98,9 +115,9 @@ let checkHorizontal = () => {
 
 let checkWinningCondition = () => {
 
-  checkHorizontal();
-  checkVertical();
-  checkDiagnol();
+  if( (checkHorizontal()) || (checkVertical()) || (checkDiagnol()) ) {
+    gameOverHandler()
+  }
 
 }
 
@@ -149,6 +166,25 @@ let addXorO = (event) => {
     toggleXorO()
   };
 }
+
+//  HANDLE RESET OF BOARD
+
+let boardReset = (event) => {
+
+  let board = resetBoard ;
+
+  let cells = document.getElementById("table").querySelectorAll("td");
+
+  for (var i = 0; i < cells.length; i++) {
+
+    let currentCell = cells[i]
+
+    currentCell.innerHTML = "";
+  }
+
+}
+
+document.getElementById('reset').addEventListener('click', boardReset)
 
 
 // apply an event listner to all items of the table
