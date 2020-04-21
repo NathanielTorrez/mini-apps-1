@@ -15,6 +15,7 @@ let winningMessage = null;
 // HANDLES GAME OVER
 
 let gameOverHandler = () => {
+
 setTimeout(() => { window.alert( winningMessage + " please restart ")}, 200)
 
 }
@@ -49,29 +50,34 @@ let checkVertical = () => {
 
     for ( var j = 0; j < rows.length; j++) {
       let currentRow = rows[j]
+
       if (currentRow[currentIndex] === 1) {
         xCounter++
 
+        if (xCounter > 2) {
+          gameOver = true
+          winningMessage =  'X vertical win'
+          xCounter = 0;
+          oCounter = 0;
+          return true;
+          break
+
+        }
+
       } else if ( currentRow[currentIndex] === 2) {
         oCounter++
+
+        if (oCounter > 2) {
+          gameOver = true
+          winningMessage = 'O vertical win'
+          xCounter = 0;
+          oCounter = 0;
+          return true
+          break
+        }
       }
 
-      if (xCounter > 2) {
-        gameOver = true
-        winningMessage =  'X vertical win'
-        xCounter = 0;
-        oCounter = 0;
-        return true;
-        break
 
-      } else if (oCounter > 2) {
-        gameOver = true
-        winningMessage = 'O vertical win'
-        xCounter = 0;
-        oCounter = 0;
-        return true
-        break
-      }
 
     }
    }
@@ -90,26 +96,27 @@ let checkHorizontal = () => {
       if (currentRow[j] === 1) {
         xCounter ++
 
+        if (xCounter > 2) {
+          gameOver = true
+          winningMessage = " X horizontal win"
+          xCounter = 0;
+          oCounter = 0;
+          return true
+          break
+        }
+
       } else if (currentRow[j] === 2) {
         oCounter++
-      }
 
-      if (oCounter > 2) {
+        if (oCounter > 2) {
 
-        gameOver = true;
-        winningMessage = " O horizontal win"
-        xCounter = 0;
-        oCounter = 0;
-        return true
-        break
-
-      } else if (xCounter > 2) {
-        gameOver = true
-        winningMessage = " X horizontal win"
-        xCounter = 0;
-        oCounter = 0;
-        return true
-        break
+          gameOver = true;
+          winningMessage = " O horizontal win"
+          xCounter = 0;
+          oCounter = 0;
+          return true
+          break;
+        }
       }
     }
   }
@@ -174,10 +181,6 @@ let addXorO = (event) => {
 
 let boardReset = (event) => {
 
-  let board = [[0, 0, 0],
-               [0, 0, 0],
-               [0, 0, 0]] ;
-
   let cells = document.getElementById("table").querySelectorAll("td");
 
   for (var i = 0; i < cells.length; i++) {
@@ -187,6 +190,11 @@ let boardReset = (event) => {
     currentCell.innerHTML = "";
   }
 
+   board = [[0, 0, 0],
+               [0, 0, 0],
+               [0, 0, 0]] ;
+
+  gameOver = false;
 }
 
 document.getElementById('reset').addEventListener('click', boardReset)
