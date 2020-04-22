@@ -5,11 +5,25 @@ class App extends React.Component {
     super(props)
 
     this.state = {
-      data: {},
-      form: null
+
+      form: null,
+      name: '',
+      email: '',
+      password: '',
+      address: '',
+      city: '',
+      state1: '',
+      zipcode1: '',
+      cardNum: '',
+      expiration: '',
+      cvv: '',
+      billZip: ''
     }
+
     this.nextFormClick = this.nextFormClick.bind(this);
+    this.updateData    = this.updateData.bind(this);
   }
+
   // handle switching forms
   nextFormClick(e) {
 
@@ -27,7 +41,29 @@ class App extends React.Component {
       this.setState({
         form: 'completed'
       })
+    } else if (this.state.form === 'completed') {
+      this.setState({
+        form: null
+      })
     }
+  }
+
+  // handle upadating the state
+  updateData(e) {
+
+    var dataProp = e.target.id;
+    var value = e.target.value;
+
+    this.setState({
+      [dataProp]: value
+    })
+    console.log('this is the state', this.state)
+  }
+
+  // handle ajax request to the server
+
+  sendToServer(){
+
   }
 
 
@@ -42,13 +78,13 @@ class App extends React.Component {
         <h3>Account Information</h3>
       <form>
         <label>Name:
-        <input></input>
+        <input value={this.state.name} id="name" onChange={this.updateData}></input>
         </label>
         <label>Email:
-        <input></input>
+         <input value={this.state.email}  onChange={this.updateData}  id="email"></input>
         </label>
         <label>Password:
-        <input></input>
+        <input value={this.state.password}  onChange={this.updateData} id="password"></input>
         </label>
         <button onClick={this.nextFormClick} >Next</button>
       </form>
@@ -62,16 +98,16 @@ class App extends React.Component {
        <h3>Shipping</h3>
      <form>
         <label> Address:
-        <input></input>
+        <input value={this.state.address} onChange={this.updateData} id="address"></input>
         </label>
         <label>City:
-        <input></input>
+        <input value={this.state.city} onChange={this.updateData} id="city"></input>
         </label>
         <label>state:
-        <input></input>
+        <input value={this.state.state1} onChange={this.updateData} id="state1"></input>
         </label>
-        <label>Zip-Code:
-        <input></input>
+        <label >Zip-Code:
+        <input value={this.state.zipcode1} id="zipcode1" onChange={this.updateData}></input>
         </label>
         <button onClick={this.nextFormClick}>Next</button>
       </form>
@@ -85,16 +121,16 @@ class App extends React.Component {
        <h3>Payment details</h3>
      <form>
         <label> Credit Card:
-        <input></input>
+        <input value={this.state.cardNum}  onChange={this.updateData} id="cardNum"></input>
         </label>
         <label>Expiration:
-        <input></input>
+        <input value={this.state.expiration}  onChange={this.updateData} id="expiration"></input>
         </label>
         <label>cvv:
-        <input></input>
+        <input value={this.state.cvv}  onChange={this.updateData} id="cvv"></input>
         </label>
         <label> Billing Zip-Code:
-        <input></input>
+        <input value={this.state.billZip}  onChange={this.updateData} id="billZip" ></input>
         </label>
         <button onClick={this.nextFormClick}>Purchase</button>
       </form>
@@ -105,6 +141,7 @@ class App extends React.Component {
      <div>
          <h1>Checkout Completed</h1>
          <div>Thank you for your order! </div>
+         <button onClick={this.nextFormClick}>return Home</button>
      </div>
     }
     return (
