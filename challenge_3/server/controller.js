@@ -2,4 +2,8 @@
 
 module.exports = {
 
+  sendToDb: (req, res) => {
+    console.log('made it sendToDB')
+  }
+
 }

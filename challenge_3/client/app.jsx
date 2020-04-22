@@ -22,6 +22,7 @@ class App extends React.Component {
 
     this.nextFormClick = this.nextFormClick.bind(this);
     this.updateData    = this.updateData.bind(this);
+    this.sendToServer  = this.sendToServer.bind(this);
   }
 
   // handle switching forms
@@ -57,12 +58,34 @@ class App extends React.Component {
     this.setState({
       [dataProp]: value
     })
-    console.log('this is the state', this.state)
   }
 
   // handle ajax request to the server
 
-  sendToServer(){
+  sendToServer(e){
+    e.preventDefault()
+    console.log('made it to sendToServer')
+    $.ajax({
+      url:'http://localhost:3000/',
+      type:'POST',
+      name:this.state.name,
+      email:this.state.email,
+      password: this.state.password,
+      address: this.state.address,
+      city:this.state.city,
+      state:this.state.state1,
+      zipcode1:this.state.zipcode1,
+      cardNum:this.state.cardNum,
+      expiration:this.state.expiration,
+      cvv:this.state.cvv,
+      billZip:this.state.billZip,
+      success: () => {console.log('successfully sent')},
+      error: (err) => {console.error(err)}
+    })
+
+    this.setState({
+      form: null
+    })
 
   }
 
@@ -132,7 +155,7 @@ class App extends React.Component {
         <label> Billing Zip-Code:
         <input value={this.state.billZip}  onChange={this.updateData} id="billZip" ></input>
         </label>
-        <button onClick={this.nextFormClick}>Purchase</button>
+        <button onClick={this.sendToServer}>Purchase</button>
       </form>
       </div>
 
@@ -141,7 +164,7 @@ class App extends React.Component {
      <div>
          <h1>Checkout Completed</h1>
          <div>Thank you for your order! </div>
-         <button onClick={this.nextFormClick}>return Home</button>
+         <button onClick={this.nextFormClick} >return Home</button>
      </div>
     }
     return (
