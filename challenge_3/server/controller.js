@@ -1,9 +1,12 @@
-//const model = require('../db.model.js')
+const model = require('../db/model.js')
 
 module.exports = {
 
   sendToDb: (req, res) => {
-    console.log('made it sendToDB')
+
+    model.postToDb(req.body, res)
+    res.status(200)
+    res.end()
   }
 
 }

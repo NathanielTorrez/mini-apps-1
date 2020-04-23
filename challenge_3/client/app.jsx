@@ -6,18 +6,18 @@ class App extends React.Component {
 
     this.state = {
 
-      form: null,
-      name: '',
-      email: '',
-      password: '',
-      address: '',
-      city: '',
-      state1: '',
-      zipcode1: '',
-      cardNum: '',
-      expiration: '',
-      cvv: '',
-      billZip: ''
+      form: 'homepage',
+      name: "",
+      email: "",
+      password: "",
+      address: "",
+      city: "",
+      state1: "",
+      zipcode1: "",
+      cardNum: "",
+      expiration: "",
+      cvv: "",
+      billZip: ""
     }
 
     this.nextFormClick = this.nextFormClick.bind(this);
@@ -29,8 +29,11 @@ class App extends React.Component {
   nextFormClick(e) {
 
     e.preventDefault()
-
-    if (this.state.form === null) {
+    if (this.state.form === 'homepage') {
+       this.setState({
+         form:null
+       })
+    } else if (this.state.form === null) {
       this.setState({
         form: 'form 1'
       })
@@ -44,7 +47,7 @@ class App extends React.Component {
       })
     } else if (this.state.form === 'completed') {
       this.setState({
-        form: null
+        form: 'homepage'
       })
     }
   }
@@ -64,10 +67,8 @@ class App extends React.Component {
 
   sendToServer(e){
     e.preventDefault()
-    console.log('made it to sendToServer')
-    $.ajax({
-      url:'http://localhost:3000/',
-      type:'POST',
+
+    var formData = {
       name:this.state.name,
       email:this.state.email,
       password: this.state.password,
@@ -78,16 +79,21 @@ class App extends React.Component {
       cardNum:this.state.cardNum,
       expiration:this.state.expiration,
       cvv:this.state.cvv,
-      billZip:this.state.billZip,
-      success: () => {console.log('successfully sent')},
-      error: (err) => {console.error(err)}
-    })
+      billZip:this.state.billZip
+    }
+    console.log(formData)
+
+    console.log('made it to sendToServer')
+    axios.post('http://localhost:3000/', formData)
+    .then(() => {console.log('success')})
+    .catch((error) => {console.error(error) })
 
     this.setState({
-      form: null
+      form: 'homepage'
     })
 
   }
+
 
 
   render() {
@@ -109,8 +115,8 @@ class App extends React.Component {
         <label>Password:
         <input value={this.state.password}  onChange={this.updateData} id="password"></input>
         </label>
-        <button onClick={this.nextFormClick} >Next</button>
       </form>
+        <button onClick={this.nextFormClick} >Next</button>
       </div>
 
     } else if (this.state.form === 'form 1') {
@@ -132,8 +138,8 @@ class App extends React.Component {
         <label >Zip-Code:
         <input value={this.state.zipcode1} id="zipcode1" onChange={this.updateData}></input>
         </label>
-        <button onClick={this.nextFormClick}>Next</button>
       </form>
+        <button onClick={this.nextFormClick}>Next</button>
       </div>
 
     } else if (this.state.form === 'form 2') {
@@ -155,8 +161,8 @@ class App extends React.Component {
         <label> Billing Zip-Code:
         <input value={this.state.billZip}  onChange={this.updateData} id="billZip" ></input>
         </label>
-        <button onClick={this.sendToServer}>Purchase</button>
       </form>
+        <button onClick={this.sendToServer}>Purchase</button>
       </div>
 
     } else if (this.state.form === 'completed' ) {
@@ -166,6 +172,12 @@ class App extends React.Component {
          <div>Thank you for your order! </div>
          <button onClick={this.nextFormClick} >return Home</button>
      </div>
+    } else if (this.state.form === 'homepage') {
+      currentForm =
+      <div>
+        <h1>Ready to Checkout?</h1>
+        <button onClick={this.nextFormClick} >Next</button>
+      </div>
     }
     return (
     <div>
