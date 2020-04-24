@@ -85,7 +85,6 @@ class Board extends React.Component {
         this.setState({
           [num]: this.state.currentPlayer
         })
-        console.log(this.state['56'] )
         return i
       }
 
@@ -93,6 +92,215 @@ class Board extends React.Component {
     return 'invalid'
   }
 
+  // winning logic
+
+  checkRow() {
+
+    for( var i = 0; i <= 5; i++) {
+
+      var currentRow = this.state.board[i];
+      var goldCount  = 0
+      var silverCount = 0
+
+      for (var j = 0; j <= 6; j++) {
+
+        if (currentRow[j] === 'gold') {
+          goldCount++
+        } else if (currentRow[j] === 'silver') {
+          silverCount++
+        }
+        if ( goldCount > 3 ) {
+          return true
+        }
+        if (silverCount > 3) {
+          return true
+        }
+      }
+    }
+    return false;
+
+  }
+
+  checkColumn() {
+
+    // column is board[0][1] board [1][1] board[2][1] board[3][1] board[4][1] board [5][1]
+
+    for ( var i = 0; i <= 6; i ++) {
+
+      var goldCount = 0
+      var silverCount = 0
+
+      for (var j = 0; j <= 5; j++) {
+
+        var columnEle = this.state.board[j][i];
+
+        if (columnEle === 'gold') {
+          goldCount++
+        } else if ( columnEle === 'silver') {
+          silverCount++
+        }
+
+        if ( goldCount > 3 ) {
+          return true
+        }
+        if (silverCount > 3) {
+          return true
+        }
+      }
+    }
+      return false
+  }
+
+  checkDown(row, column) {
+    // times checked counter at 1
+
+    var counter = 0;
+    var board = this.state.board;
+    // while incrementer is less than 5
+    var goldCount = 0;
+    var silverCount = 0;
+
+
+    while (counter < 5) {
+    // current row = row + count
+    var currentRow = row + counter;
+    //current column = column + count
+    var currentColumn = parseInt(column) + counter;
+    //if current row > 5 or current column > 6 return false
+    if (currentRow > 5 || currentColumn > 6 ) {
+      return false
+    }
+
+    // check board at row + 1 and y + 1
+
+    if (board[currentRow][currentColumn] === 'gold') {
+
+      goldCount++
+      if (goldCount > 3) {
+        return true
+      }
+
+    } else if (board[currentRow][currentColumn] === 'silver') {
+      silverCount++
+
+      if (silverCount > 3) {
+        return true
+      }
+    }
+      counter++
+    }
+    return false
+  }
+
+  checkLeft(row,column) {
+
+    var counter = 0;
+    var board = this.state.board;
+    // while incrementer is less than 5
+    var goldCount = 0;
+    var silverCount = 0;
+
+
+    while (counter < 5) {
+    // current row = row + count
+    var currentRow = row + counter;
+    //current column = column + count
+    var currentColumn = parseInt(column) - counter;
+    //if current row > 5 or current column > 6 return false
+    if (currentRow > 5 || currentColumn < 0 ) {
+      return false
+    }
+
+    // check board at row + 1 and y + 1
+
+    if (board[currentRow][currentColumn] === 'gold') {
+
+      goldCount++
+      if (goldCount > 3) {
+        return true
+      }
+
+    } else if (board[currentRow][currentColumn] === 'silver') {
+      silverCount++
+
+      if (silverCount > 3) {
+        return true
+      }
+    }
+      counter++
+    }
+    return false
+
+    }
+
+    checkDown(row, column) {
+      // times checked counter at 1
+
+      var counter = 0;
+      var board = this.state.board;
+      // while incrementer is less than 5
+      var goldCount = 0;
+      var silverCount = 0;
+
+
+      while (counter < 5) {
+      // current row = row + count
+      var currentRow = row + counter;
+      //current column = column + count
+      var currentColumn = parseInt(column) + counter;
+      //if current row > 5 or current column > 6 return false
+      if (currentRow > 5 || currentColumn > 6 ) {
+        return false
+      }
+
+      // check board at row + 1 and y + 1
+
+      if (board[currentRow][currentColumn] === 'gold') {
+
+        goldCount++
+        if (goldCount > 3) {
+          return true
+        }
+
+      } else if (board[currentRow][currentColumn] === 'silver') {
+        silverCount++
+
+        if (silverCount > 3) {
+          return true
+        }
+      }
+        counter++
+      }
+      return false
+
+  }
+
+  checkDiagnol(row, column) {
+
+    // check each element using a nested array
+    // if an element is a gold or silver start new function checkDown
+
+    if (this.checkDown(row, column)) {
+      return true
+    } else if(this.checkLeft(row,column)) {
+      return true
+    }
+  return false
+  }
+
+  winCheck(row,column) {
+
+    if (this.checkRow()) {
+     return true
+    }
+    if (this.checkColumn()) {
+     return true
+    }
+    if (this.checkDiagnol(row, column)) {
+     return true
+    }
+    return false
+  }
   changeBoard(e) {
 
     e.preventDefault();
@@ -120,13 +328,18 @@ class Board extends React.Component {
 
     // change to next player
 
+    if (this.winCheck(trueRow,column)) {
+     window.alert(`${this.state.currentPlayer} WINS! Please restart to play again`)
+    };
+
     this.changePlayer();
 
+    // TODO INVALID LOGIC HANDLE
+
   } else {
-    console.log('invalid')
+    window.alert('invalid placement please select another')
   }
 
-    console.log(this.state.board)
 
   }
 
