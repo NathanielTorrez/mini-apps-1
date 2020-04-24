@@ -60,6 +60,7 @@ class Board extends React.Component {
       '56' : ''
     }
     this.changeBoard = this.changeBoard.bind(this);
+    this.changePlayer = this.changePlayer.bind(this);
   }
 
   changePlayer() {
@@ -329,12 +330,12 @@ class Board extends React.Component {
     // change to next player
 
     if (this.winCheck(trueRow,column)) {
-     window.alert(`${this.state.currentPlayer} WINS! Please restart to play again`)
+     setTimeout(() => {
+       this.changePlayer()
+       window.alert(`${this.state.currentPlayer} WINS! Please restart to play again`)}, 300)
     };
 
     this.changePlayer();
-
-    // TODO INVALID LOGIC HANDLE
 
   } else {
     window.alert('invalid placement please select another')
