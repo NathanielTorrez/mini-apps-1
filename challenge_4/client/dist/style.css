@@ -1,0 +1,54 @@
+@keyframes slide {
+  from {margin-left: -10%;}
+  to {margin-left: 70%;}
+
+}
+
+body {
+
+  background-image: url(https://ak9.picdn.net/shutterstock/videos/1015455169/thumb/11.jpg);
+
+}
+
+#head {
+
+  font-size: 50px;
+  color: #FFD700;
+
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+}
+
+table {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 100px;
+  border-color: #FFD700;
+  border-width: 4px;
+  border-radius: 15px;
+}
+
+td {
+  border-width: 4px;
+  border-color: #FFD700 ;
+  width: 90px;
+  height: 90px;
+  text-align: center;
+  font-size: xx-large;
+  background-color: #70d1f4 ;
+  border-radius: 15px;
+}
+
+td:hover {
+ background-color: #FFD700;
+}
+
+.gold {
+  background-color: #FFD700;
+}
+
+.silver {
+  background-color: silver;
+}
+
+
